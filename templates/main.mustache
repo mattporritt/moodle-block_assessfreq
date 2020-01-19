@@ -26,4 +26,9 @@
 <div id="block-assessfreq-{{uniqid}}" class="block-assessfreq block-cards" data-region="assessfreq" role="navigation">
     test content from template.
 </div>
-
+{{#js}}
+require(['block_assessfreq/main'], function(Main) {
+    var root = document.getElementById('#block-myoverview-{{uniqid}}');
+    Main.init(root);
+});
+{{/js}}
