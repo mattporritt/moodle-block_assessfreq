@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Capabilities for the Assessment Frequency block.
  *
  * @package     block_assessfreq
  * @copyright   2020 Matt Porritt <mattp@catalyst-au.net>
@@ -24,8 +24,28 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_assessfreq';
-$plugin->release = '2020011901';
-$plugin->version = 2020011901;
-$plugin->requires = 2019052000;
-$plugin->maturity = MATURITY_ALPHA;
+$capabilities = array(
+
+    'block/assessfreq:myaddinstance' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/my:manageblocks'
+    ),
+
+    'block/assessfreq:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+);

@@ -36,7 +36,7 @@ class block_assessfreq extends block_base {
      */
     public function init() {
         // Needed by Moodle to differentiate between blocks.
-        $this->title = get_string('pluginname', 'block_assessfreq');
+        $this->title = get_string('title', 'block_assessfreq');
     }
 
     /**
@@ -92,6 +92,8 @@ class block_assessfreq extends block_base {
      */
     public function applicable_formats() {
         return array(
+            'my' => true,
+            'course-view' => true,
         );
     }
 }

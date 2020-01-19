@@ -25,4 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Assessment Frequency';
+$string['pluginname'] = 'Assessment Frequency Block';
+$string['title'] = 'Assessment Frequency';
+$string['assessfreq:addinstance'] = 'Add a new Assessment Frequency block';
+$string['assessfreq:myaddinstance'] = 'Add a new Assessment Frequency block to the My Moodle page';
+$string['privacy:metadata'] = 'The Global search block only shows data stored in other locations.';
