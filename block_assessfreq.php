@@ -45,27 +45,18 @@ class block_assessfreq extends block_base {
      * @return stdClass The block contents.
      */
     public function get_content() {
-
-        if ($this->content !== null) {
+        if (isset($this->content)) {
             return $this->content;
         }
 
-        if (empty($this->instance)) {
-            $this->content = '';
-            return $this->content;
-        }
+        $renderable = new \block_assessfreq\output\main();
+        $renderer = $this->page->get_renderer('block_assessfreq');
 
         $this->content = new stdClass();
+        $this->content->text = $renderer->render($renderable);
         $this->content->items = array();
         $this->content->icons = array();
         $this->content->footer = '';
-
-        if (!empty($this->config->text)) {
-            $this->content->text = $this->config->text;
-        } else {
-            $text = 'Please define the content text in /blocks/assessfreq/block_assessfreq.php.';
-            $this->content->text = $text;
-        }
 
         return $this->content;
     }
