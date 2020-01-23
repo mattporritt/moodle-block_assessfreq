@@ -23,12 +23,15 @@
     {}
 }}
 
-<div id="block-assessfreq-{{uniqid}}" class="block-assessfreq block-cards" data-region="assessfreq" role="navigation">
-    test content from template.
+<div id="block-assessfreq-{{uniqid}}" class="block-assessfreq block-assessfreq-row" data-region="assessfreq">
+    <div class="block-assessfreq-month">a</div>
+    <div class="block-assessfreq-month">b</div>
+    <div class="block-assessfreq-month">c</div>
+    <div class="block-assessfreq-month">d</div>
 </div>
 {{#js}}
 require(['block_assessfreq/main'], function(Main) {
-    var root = document.getElementById('#block-myoverview-{{uniqid}}');
+    var root = document.getElementById('block-assessfreq-{{uniqid}}');
     Main.init(root);
 });
 {{/js}}

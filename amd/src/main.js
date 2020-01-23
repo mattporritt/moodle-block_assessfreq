@@ -21,20 +21,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function($) {
+define([], function() {
 
     /**
      * Module level variables.
      */
     var Main = {};
     var today = new Date();
-    var currentMonth = today.getMonth();
-    var currentYear = today.getFullYear();
-
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     /**
-     * Check how many days in a month code
+     * Check how many days in a month code.
      * from https://dzone.com/articles/determining-number-days-month.
      */
     function daysInMonth(month, year) {
@@ -44,19 +40,12 @@ define(['jquery'], function($) {
     /**
      * Generate calendar markup for the month.
      */
-    function generateCalendar(month, year) {
+    function generateCalendar(month, year, tbl) {
 
         let firstDay = (new Date(year, month)).getDay();  // Get the starting day of the month.
 
-        tbl = document.getElementById("calendar-body"); // Body of the calendar.
-
         // Clearing all previous cells.
         tbl.innerHTML = "";
-
-        // Filing data about month and in the page via DOM.
-        monthAndYear.innerHTML = months[month] + " " + year;
-        selectYear.value = year;
-        selectMonth.value = month;
 
         // Creating all cells.
         let date = 1;
@@ -67,8 +56,8 @@ define(['jquery'], function($) {
             // Creating individual cells, filing them up with data.
             for (let j = 0; j < 7; j++) {
                 if (i === 0 && j < firstDay) {
-                    cell = document.createElement("td");
-                    cellText = document.createTextNode("");
+                    var cell = document.createElement("td");
+                    var cellText = document.createTextNode("");
                     cell.appendChild(cellText);
                     row.appendChild(cell);
                 }
@@ -95,14 +84,23 @@ define(['jquery'], function($) {
     }
 
     /**
-     * Initialise all of the modules for the overview block.
+     * Initialise all of the modules for the assessment frequency block.
      *
-     * @param {object} root The root element for the overview block.
+     * @param {object} root The root element for the assessment frequency block.
      */
     Main.init = function(root) {
-        root = $(root);
+        // Get the containers that will hold the months.
+        var calendarContainer = root;
+        var containerdivs = calendarContainer.children;
 
-        window.console.log(root);
+        // Start with current month and year
+        var month = today.getMonth();
+        var year = today.getFullYear();
+
+        for (let i = 0; i < containerdivs.length; i++) {
+            generateCalendar(month, year, containerdivs[i]);
+            month++;
+          }
     };
 
     return Main;
