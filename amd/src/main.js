@@ -40,9 +40,10 @@ define([], function() {
     /**
      * Generate calendar markup for the month.
      */
-    function generateCalendar(month, year, tbl) {
+    function generateCalendar(month, year, containerdiv) {
 
         let firstDay = (new Date(year, month)).getDay();  // Get the starting day of the month.
+        var tbl = containerdiv.getElementsByTagName("tbody")[0];
 
         // Clearing all previous cells.
         tbl.innerHTML = "";

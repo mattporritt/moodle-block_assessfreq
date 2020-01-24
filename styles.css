@@ -1,0 +1,19 @@
+.block-assessfreq.block-assessfreq-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.block-assessfreq .block-assessfreq-month {
+    width: 270px;
+}
+
+.block-assessfreq .block-assessfreq-month thead {
+    text-align: center;
+}
+
+.block-assessfreq .block-assessfreq-month td {
+    border: 1px solid #dddddd;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+}
