@@ -39,11 +39,10 @@ use block_assessfreq\frequency;
 class frequency_testcase extends advanced_testcase {
 
     /**
-     * Test getting the rawevents.
+     * Test getting the raw events.
      */
     public function test_get_events() {
         $this->resetAfterTest();
-        //$this->setUser();
 
         $user = $this->getDataGenerator()->create_user();
         $course1 = $this->getDataGenerator()->create_course();
@@ -65,16 +64,16 @@ class frequency_testcase extends advanced_testcase {
             ]);
         }
 
-//         for ($i = 6; $i < 12; $i++) {
-//             create_event([
-//                 'name' => sprintf('Event %d', $i),
-//                 'eventtype' => 'user',
-//                 'userid' => $user->id,
-//                 'timesort' => $i,
-//                 'type' => CALENDAR_EVENT_TYPE_ACTION,
-//                 'courseid' => $course2->id,
-//             ]);
-//         }
+        for ($i = 2; $i < 4; $i++) {
+            create_event([
+                'name' => sprintf('Event %d', $i),
+                'eventtype' => 'user',
+                'userid' => $user->id,
+                'timesort' => $i,
+                'type' => CALENDAR_EVENT_TYPE_ACTION,
+                'courseid' => $course2->id,
+            ]);
+        }
 
         $frequency = new frequency();
 
@@ -83,6 +82,56 @@ class frequency_testcase extends advanced_testcase {
         $method->setAccessible(true); // Allow accessing of private method.
         $result = $method->invoke($frequency);
 
-        error_log(print_r($result, true));
+        $this->assertCount(3, $result); // Should be 3 events across 2 courses.
+        $this->assertEquals('Event 1', $result[0]->get_name());
+        $this->assertEquals('Event 2', $result[1]->get_name());
+        $this->assertEquals('Event 3', $result[2]->get_name());
+    }
+
+    /**
+     * Test getting the frequency array.
+     */
+    public function test_get_frequency_array() {
+        $this->resetAfterTest();
+        //$this->setUser();
+
+        $user = $this->getDataGenerator()->create_user();
+        $course1 = $this->getDataGenerator()->create_course();
+        $course2 = $this->getDataGenerator()->create_course();
+
+        $this->resetAfterTest(true);
+        $this->setAdminuser();
+        $this->getDataGenerator()->enrol_user($user->id, $course1->id);
+        $this->getDataGenerator()->enrol_user($user->id, $course2->id);
+
+        for ($i = 1; $i < 3; $i++) {
+            create_event([
+                'name' => sprintf('Event %d', $i),
+                'eventtype' => 'user',
+                'userid' => $user->id,
+                'timesort' => $i,
+                'timestart' => 1581227776,
+                'type' => CALENDAR_EVENT_TYPE_ACTION,
+                'courseid' => $course1->id,
+            ]);
+        }
+
+        for ($i = 3; $i < 6; $i ++) {
+            create_event([
+                'name' => sprintf('Event %d', $i),
+                'eventtype' => 'user',
+                'userid' => $user->id,
+                'timesort' => $i,
+                'timestart' => 1581170400,
+                'type' => CALENDAR_EVENT_TYPE_ACTION,
+                'courseid' => $course2->id
+            ]);
+        }
+
+        $frequency = new frequency();
+        $result = $frequency->get_frequency_array();
+
+        $this->assertEquals(2, $result[2020][2][9]);
+        $this->assertEquals(3, $result[2020][2][8]);
     }
 }

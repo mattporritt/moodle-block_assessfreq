@@ -38,18 +38,52 @@ defined('MOODLE_INTERNAL') || die();
  */
 class frequency {
 
-    private function get_events() {
+    /**
+     * Get the raw events for the current user.
+     *
+     * @return array $events An array of the raw events.
+     */
+    private function get_events() : array {
 
         $vault = \core_calendar\local\event\container::get_event_vault();
+
+        // TODO: Get events has a limit of 20 by default need to work around this.
+        // TODO: need to filter to a particular user.
         $events = $vault->get_events();
 
+        // get_times
         return $events;
 
     }
 
+    /**
+     * Generate a frequency array of the events.
+     * The form of the array is: [yyyy][mm][dd] = number of events that day.
+     *;
+     * @return array $freqarray The array of even frequencies.
+     */
     public function get_frequency_array() : array {
+        $freqarray = array();
 
+        // Get the raw events.
+        $events = $this->get_events();
 
-        return array ();
+        // Iterate through the events, building the frequency array.
+        foreach ($events as $event) {
+            $eventtimes = $event->get_times();
+            $endtime = $eventtimes->get_end_time();
+            $year = $endtime->format('Y');
+            $month = $endtime->format('n');
+            $day = $endtime->format('j');
+
+            // Construct the multidimensional array.
+            if (empty($freqarray[$year][$month][$day])) {
+                $freqarray[$year][$month][$day] = 1;
+            } else {
+                $freqarray[$year][$month][$day]++;
+            }
+        }
+
+        return $freqarray;
     }
 }
