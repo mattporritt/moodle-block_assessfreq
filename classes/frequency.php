@@ -26,6 +26,8 @@ namespace block_assessfreq;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/calendar/lib.php');
+
 /**
  * Frequency class.
  *
@@ -58,8 +60,7 @@ class frequency {
 
     /**
      * Generate a frequency array of the events.
-     * The form of the array is: [yyyy][mm][dd] = number of events that day.
-     *;
+z     *;
      * @return array $freqarray The array of even frequencies.
      */
     public function get_frequency_array() : array {

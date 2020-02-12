@@ -39,7 +39,11 @@ class block_assessfreq_external extends external_api {
      * @return void
      */
     public static function get_frequency_parameters() {
-        return;
+        return new external_function_parameters(
+            array(
+                //if I had any parameters, they would be described here. But I don't have any, so this array is empty.
+            )
+        );
     }
 
     /**
@@ -52,32 +56,14 @@ class block_assessfreq_external extends external_api {
         $frequency = new \block_assessfreq\frequency();
         $freqarr = $frequency->get_frequency_array();
 
-        // Turn this into a nested array, so that the ordering can survive JSON-encoding.
-        // (Because a PHP associative array becomes a JSON object, and according to the
-        // specification, the order of the keys in a JS/JSON object is not meant to be
-        // meaningful, while the order of the elements in a JS/JSON array is.)
-        $output = [];
-        foreach ($steps as $class => $namestr) {
-            $output[] = [
-                'class' => $class,
-                'name' => $namestr
-            ];
-        }
-        return $freqarr;
+        return json_encode($freqarr);
     }
 
     /**
      * Returns description of method result value
      * @return external_description
      */
-    public static function get_frequency() {
-        return new external_multiple_structure(
-            new external_single_structure(
-                array(
-                    'class' => new external_value(PARAM_TEXT, 'Event identifier'),
-                    'name' => new external_value(PARAM_TEXT, 'Event Name'),
-                )
-                )
-            );
+    public static function get_frequency_returns() {
+        return new external_value(PARAM_RAW, 'Event JSON');
     }
 }
