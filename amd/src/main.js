@@ -29,6 +29,7 @@ define(['core/ajax'], function(ajax) {
     var Main = {};
     var today = new Date();
     var eventArray = [];
+    var stringArray = [];
 
     /**
      * Check how many days in a month code.
@@ -116,6 +117,18 @@ define(['core/ajax'], function(ajax) {
      * @param {object} root The root element for the assessment frequency block.
      */
     Main.init = function(root) {
+        // Make ajax call to get all the strings we'll need.
+        // This is more efficient than making an ajax call per string.
+        ajax.call([{
+            methodname: 'block_assessfreq_get_strings',
+            args: {},
+        }])[0].done(function(response) {
+            stringArray = JSON.parse(response);
+        }).fail(function(response) {
+            // TODO: add an alert here like you did for the async backup stuff.
+            window.console.log(response);
+        });
+
         // Get the containers that will hold the months.
         var calendarContainer = root;
         var containerdivs = calendarContainer.children;
@@ -139,11 +152,9 @@ define(['core/ajax'], function(ajax) {
                 month++;
             }
         }).fail(function(response) {
+            // TODO: add an alert here like you did for the async backup stuff.
             window.console.log(response);
         });
-
-
-
 
     };
 

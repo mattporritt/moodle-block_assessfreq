@@ -66,4 +66,43 @@ class block_assessfreq_external extends external_api {
     public static function get_frequency_returns() {
         return new external_value(PARAM_RAW, 'Event JSON');
     }
+
+    /**
+     * Returns description of method parameters.
+     * @return void
+     */
+    public static function get_strings_parameters() {
+        return new external_function_parameters(
+            array(
+                //if I had any parameters, they would be described here. But I don't have any, so this array is empty.
+            )
+            );
+    }
+
+    /**
+     * Returns event frequency map.
+     *
+     */
+    public static function get_strings() {
+
+        $stringarr = array(
+            'sun' => get_string('sun', 'calendar'),
+            'mon' => get_string('mon', 'calendar'),
+            'tue' => get_string('tue', 'calendar'),
+            'wed' => get_string('wed', 'calendar'),
+            'thu' => get_string('thu', 'calendar'),
+            'fri' => get_string('fri', 'calendar'),
+            'sat' => get_string('sat', 'calendar'),
+        );
+
+        return json_encode($stringarr);
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function get_strings_returns() {
+        return new external_value(PARAM_RAW, 'Event JSON');
+    }
 }
