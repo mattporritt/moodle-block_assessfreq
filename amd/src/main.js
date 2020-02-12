@@ -38,6 +38,25 @@ define(['core/ajax'], function(ajax) {
         return 32 - new Date(year, month, 32).getDate();
     }
 
+    function createTables(month, num) {
+        // Setup some elements we can reuse.
+        var table = document.createElement("table");
+        var thead = document.createElement("thead");
+        var tbody = document.createElement("tbody");
+        var monthRow = document.createElement("tr");
+        var dayrow = document.createElement("tr");
+        var monthHeader = document.createElement("th");
+
+        var day0Header = document.createElement("th");
+        var day1Header = document.createElement("th");
+        var day2Header = document.createElement("th");
+        var day3Header = document.createElement("th");
+        var day4Header = document.createElement("th");
+        var day5Header = document.createElement("th");
+        var day6Header = document.createElement("th");
+
+    }
+
     /**
      * Generate calendar markup for the month.
      */
@@ -73,7 +92,7 @@ define(['core/ajax'], function(ajax) {
                     cell = document.createElement("td");
                     cellText = document.createTextNode(date);
                     if ((typeof monthEvents !== "undefined") && (monthEvents.hasOwnProperty(date))) {
-                        var heatClass = "heat-" + monthEvents[date];
+                        var heatClass = "heat-" + monthEvents[date]['heat'];
                         cell.classList.add(heatClass);
                     }
                     if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
@@ -101,9 +120,12 @@ define(['core/ajax'], function(ajax) {
         var calendarContainer = root;
         var containerdivs = calendarContainer.children;
 
-        // Start with current month and year
+        // Start with current month and year.
         var month = today.getMonth();
         var year = today.getFullYear();
+
+        // Create the table shell.
+        createTables(month, 4);
 
         // Get the events to use in the mapping.
         ajax.call([{

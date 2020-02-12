@@ -131,7 +131,33 @@ class frequency_testcase extends advanced_testcase {
         $frequency = new frequency();
         $result = $frequency->get_frequency_array();
 
-        $this->assertEquals(2, $result[2020][2][9]);
-        $this->assertEquals(3, $result[2020][2][8]);
+        $this->assertEquals(2, $result[2020][2][9]['number']);
+        $this->assertEquals(3, $result[2020][2][8]['number']);
+        $this->assertEquals(0, $result[2020][2][9]['heat']);
+        $this->assertEquals(1, $result[2020][2][8]['heat']);
+    }
+
+    /**
+     * Test getting the map.
+     */
+    public function test_get_map() {
+        $frequency = new frequency();
+
+        // We're testing a private method, so we need to setup reflector magic.
+        $method = new ReflectionMethod('\block_assessfreq\frequency', 'get_map');
+        $method->setAccessible(true); // Allow accessing of private method.
+
+        $result = $method->invoke($frequency, 0);
+        $this->assertEquals(0, $result);
+
+        $result = $method->invoke($frequency, 1);
+        $this->assertEquals(0, $result);
+
+        $result = $method->invoke($frequency, 3);
+        $this->assertEquals(1, $result);
+
+        $result = $method->invoke($frequency, 5);
+        $this->assertEquals(2, $result);
+
     }
 }
