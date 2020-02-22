@@ -23,100 +23,18 @@
     {}
 }}
 
-<!--
-<span class="overlay-icon-container" data-region="overlay-icon-container">
+
+<span id="block-assessfreq-spinner-{{uniqid}}" class="overlay-icon-container" data-region="overlay-icon-container">
     <span class="loading-icon icon-no-margin">{{#pix}} i/loading, core, {{#str}} loading {{/str}} {{/pix}}</span>
 </span>
--->
+
 <div id="block-assessfreq-{{uniqid}}" class="block-assessfreq block-assessfreq-row" data-region="assessfreq">
-    <div class="block-assessfreq-month">
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="7">Month</th>
-                </tr>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body">
-
-            </tbody>
-        </table>
-    </div>
-    <div class="block-assessfreq-month">
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="7">Month</th>
-                </tr>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body">
-
-            </tbody>
-        </table>
-    </div>
-        <div class="block-assessfreq-month">
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="7">Month</th>
-                </tr>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body">
-
-            </tbody>
-        </table>
-    </div>
-        <div class="block-assessfreq-month">
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="7">Month</th>
-                </tr>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body">
-
-            </tbody>
-        </table>
-    </div>
+    <!-- Table content gets added here by JS. -->
 </div>
 {{#js}}
 require(['block_assessfreq/main'], function(Main) {
     var root = document.getElementById('block-assessfreq-{{uniqid}}');
-    Main.init(root);
+    var spinner = document.getElementById('block-assessfreq-spinner-{{uniqid}}');
+    Main.init(root, spinner);
 });
 {{/js}}

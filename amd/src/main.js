@@ -39,22 +39,50 @@ define(['core/ajax'], function(ajax) {
         return 32 - new Date(year, month, 32).getDate();
     }
 
-    function createTables(month, num) {
-        // Setup some elements we can reuse.
-        var table = document.createElement("table");
-        var thead = document.createElement("thead");
-        var tbody = document.createElement("tbody");
-        var monthRow = document.createElement("tr");
-        var dayrow = document.createElement("tr");
-        var monthHeader = document.createElement("th");
+    /**
+     * Construct the tables.
+     *
+     */
+    function createTables(calendarContainer, month, num) {
+        // Itterate through and build are tables.
+        for (let i = 0; i < num; i++) {
+            // Setup some elements.
+            let container = document.createElement("div");
+            container.classList.add("block-assessfreq-month");
+            let table = document.createElement("table");
+            let thead = document.createElement("thead");
+            let tbody = document.createElement("tbody");
+            tbody.id = "calendar-body";
+            let monthRow = document.createElement("tr");
+            let dayrow = document.createElement("tr");
+            let monthHeader = document.createElement("th");
+            monthHeader.colSpan = 7;
+            monthHeader.innerHTML = stringArray['months'][month];
 
-        var day0Header = document.createElement("th");
-        var day1Header = document.createElement("th");
-        var day2Header = document.createElement("th");
-        var day3Header = document.createElement("th");
-        var day4Header = document.createElement("th");
-        var day5Header = document.createElement("th");
-        var day6Header = document.createElement("th");
+            for (let j = 0; j < 7; j++) {
+                let dayHeader = document.createElement("th");
+                dayHeader.innerHTML = stringArray['days'][j];
+                dayrow.appendChild(dayHeader);
+            }
+
+            // Construct the table.
+            monthRow.appendChild(monthHeader);
+
+            thead.appendChild(monthRow);
+            thead.appendChild(dayrow);
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            container.appendChild(table);
+
+            // Add to parent.
+            calendarContainer.appendChild(container);
+
+            // Increment variables.
+            month++;
+        }
+
 
     }
 
@@ -93,7 +121,7 @@ define(['core/ajax'], function(ajax) {
                     cell = document.createElement("td");
                     cellText = document.createTextNode(date);
                     if ((typeof monthEvents !== "undefined") && (monthEvents.hasOwnProperty(date))) {
-                        var heatClass = "heat-" + monthEvents[date]['heat'];
+                        var heatClass = "block-assessfreq-heat-" + monthEvents[date]['heat'];
                         cell.classList.add(heatClass);
                     }
                     if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
@@ -108,38 +136,12 @@ define(['core/ajax'], function(ajax) {
 
             tbl.appendChild(row); // Appending each row into calendar body.
         }
-
     }
 
     /**
-     * Initialise all of the modules for the assessment frequency block.
-     *
-     * @param {object} root The root element for the assessment frequency block.
+     * Create calendars.
      */
-    Main.init = function(root) {
-        // Make ajax call to get all the strings we'll need.
-        // This is more efficient than making an ajax call per string.
-        ajax.call([{
-            methodname: 'block_assessfreq_get_strings',
-            args: {},
-        }])[0].done(function(response) {
-            stringArray = JSON.parse(response);
-        }).fail(function(response) {
-            // TODO: add an alert here like you did for the async backup stuff.
-            window.console.log(response);
-        });
-
-        // Get the containers that will hold the months.
-        var calendarContainer = root;
-        var containerdivs = calendarContainer.children;
-
-        // Start with current month and year.
-        var month = today.getMonth();
-        var year = today.getFullYear();
-
-        // Create the table shell.
-        createTables(month, 4);
-
+    function createCalendars(containerdivs, month, year, calendarContainer, spinner) {
         // Get the events to use in the mapping.
         ajax.call([{
             methodname: 'block_assessfreq_get_frequency',
@@ -154,6 +156,41 @@ define(['core/ajax'], function(ajax) {
         }).fail(function(response) {
             // TODO: add an alert here like you did for the async backup stuff.
             window.console.log(response);
+        }).then(function(){
+            calendarContainer.classList.remove("block-assessfreq.block-assessfreq-row-hidden");
+            calendarContainer.classList.add("block-assessfreq.block-assessfreq-row");
+            spinner.remove();
+        });
+    }
+
+    /**
+     * Initialise all of the modules for the assessment frequency block.
+     *
+     * @param {object} root The root element for the assessment frequency block.
+     */
+    Main.init = function(root, spinner) {
+        // Get the containers that will hold the months.
+        var calendarContainer = root;
+        var containerdivs = calendarContainer.children;
+
+        // Start with current month and year.
+        var month = today.getMonth();
+        var year = today.getFullYear();
+
+        // Make ajax call to get all the strings we'll need.
+        // This is more efficient than making an ajax call per string.
+        ajax.call([{
+            methodname: 'block_assessfreq_get_strings',
+            args: {},
+        }])[0].done(function(response) {
+            stringArray = JSON.parse(response);
+            // Create the table shell.
+            createTables(calendarContainer, month, 4);
+        }).fail(function(response) {
+            // TODO: add an alert here like you did for the async backup stuff.
+            window.console.log(response);
+        }).then(function() {
+            createCalendars(containerdivs, month, year, calendarContainer, spinner);
         });
 
     };

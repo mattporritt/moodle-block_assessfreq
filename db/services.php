@@ -34,4 +34,12 @@ $functions = array(
                 'type'        => 'read',
                 'ajax' => true
         ),
+        'block_assessfreq_get_strings' => array(
+            'classname'   => 'block_assessfreq_external',
+            'methodname'  => 'get_strings',
+            'classpath'   => 'blocks/assessfreq/externallib.php',
+            'description' => 'Returns strings used in map.',
+            'type'        => 'read',
+            'ajax' => true
+        ),
 );
